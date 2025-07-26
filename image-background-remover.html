@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ছবি থেকে ব্যাকগ্রাউন্ড রিমুভার</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex-grow: 1;
+        }
+        h1 { color: #db2777; }
+
+        /* Ad Placeholders Style */
+        .ad-placeholder {
+            width: 100%;
+            height: 90px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 16px;
+        }
+        .ad-placeholder-top { border-bottom: 1px solid #dee2e6; margin-bottom: 20px; }
+        .ad-placeholder-bottom { border-top: 1px solid #dee2e6; margin-top: 20px; }
+        
+        /* Upload Area */
+        .upload-area input[type="file"] { display: none; }
+        .upload-area label {
+            background-color: #db2777;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .upload-area label:hover { background-color: #be185d; }
+        
+        /* Image Display */
+        .image-display {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 25px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .image-box {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            min-width: 250px;
+        }
+        .image-box img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 5px;
+        }
+        .image-box p { font-weight: bold; }
+        #result-box {
+            /* Checkerboard pattern for transparency */
+            background-image:
+                linear-gradient(45deg, #ccc 25%, transparent 25%),
+                linear-gradient(135deg, #ccc 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #ccc 75%),
+                linear-gradient(135deg, transparent 75%, #ccc 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 0, 10px -10px, 0px 10px;
+        }
+        
+        /* Button & Status */
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+            font-weight: bold;
+        }
+        .action-button {
+            background-color: #16a34a;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .action-button:hover { background-color: #15803d; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="ad-placeholder ad-placeholder-top"><p>বিজ্ঞাপনের জন্য জায়গা (Top Ad Space)</p></div>
+
+    <div class="container">
+        <h1>ছবি থেকে ব্যাকগ্রাউন্ড রিমুভার</h1>
+        <p>যেকোনো ছবি থেকে الخلفية (background) সরিয়ে ফেলুন এক ক্লিকে।</p>
+
+        <div class="upload-area">
+            <input type="file" id="imageInput" accept="image/jpeg, image/png, image/webp">
+            <label for="imageInput">ছবি আপলোড করুন</label>
+        </div>
+
+        <div id="status" class="hidden">লোড হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন।</div>
+
+        <div id="image-display" class="image-display hidden">
+            <div class="image-box">
+                <div>
+                    <p>আসল ছবি</p>
+                    <img id="originalImage" src="#" alt="Original"/>
+                </div>
+            </div>
+            <div id="result-box" class="image-box">
+                <div>
+                    <p>ফলাফল</p>
+                    <img id="resultImage" src="#" alt="Result"/>
+                </div>
+            </div>
+        </div>
+
+        <a id="downloadBtn" href="#" class="action-button hidden" download="background-removed.png">ডাউনলোড করুন (PNG)</a>
+    </div>
+
+    <div class="ad-placeholder ad-placeholder-bottom"><p>বিজ্ঞাপনের জন্য জায়গা (Bottom Ad Space)</p></div>
+
+    <script type="module">
+        // Import the library from a CDN
+        import { removeBackground } from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.0.1/dist/index.mjs";
+
+        // Get all the necessary elements from the page
+        const imageInput = document.getElementById('imageInput');
+        const statusDiv = document.getElementById('status');
+        const imageDisplayDiv = document.getElementById('image-display');
+        const originalImage = document.getElementById('originalImage');
+        const resultImage = document.getElementById('resultImage');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        let currentFile = null;
+
+        // Listen for when a user selects a file
+        imageInput.addEventListener('change', async (event) => {
+            currentFile = event.target.files[0];
+            if (!currentFile) return;
+
+            // Hide previous results and show the original image preview
+            imageDisplayDiv.classList.remove('hidden');
+            resultImage.src = '';
+            downloadBtn.classList.add('hidden');
+            originalImage.src = URL.createObjectURL(currentFile);
+
+            // Show status and start processing
+            statusDiv.classList.remove('hidden');
+            
+            try {
+                // This is the core function that removes the background
+                const resultBlob = await removeBackground(currentFile);
+                
+                // Create a URL for the result image (which has no background)
+                const resultUrl = URL.createObjectURL(resultBlob);
+                
+                // Display the result image
+                resultImage.src = resultUrl;
+                
+                // Make the download button visible and set its link
+                downloadBtn.classList.remove('hidden');
+                downloadBtn.href = resultUrl;
+
+            } catch (error) {
+                console.error("Error removing background:", error);
+                statusDiv.textContent = "দুঃখিত, একটি সমস্যা হয়েছে।";
+                return; // Stop if there's an error
+            }
+
+            // Hide the status message once done
+            statusDiv.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
