@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সহজ ইমেজ কম্প্রেসার</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        h1 {
+            color: #0d6efd;
+        }
+
+        /* Ad Placeholders Style */
+        .ad-placeholder-top, .ad-placeholder-bottom {
+            width: 100%;
+            height: 90px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 16px;
+            border-bottom: 1px solid #dee2e6;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .ad-placeholder-top { margin-bottom: 20px; }
+        .ad-placeholder-bottom { margin-top: 20px; }
+
+        /* Upload Area Style */
+        .upload-area input[type="file"] { display: none; }
+
+        .upload-area label {
+            background-color: #0d6efd;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .upload-area label:hover { background-color: #0b5ed7; }
+        
+        #image-preview { margin-top: 20px; }
+        #preview {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+        }
+
+        /* --- নতুন কোয়ালিটি স্লাইডারের ডিজাইন --- */
+        .quality-slider {
+            margin: 25px 0 15px 0;
+            text-align: center;
+        }
+        .quality-slider label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+        #qualityRange {
+            width: 80%;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        /* --- ডিজাইন শেষ --- */
+
+        /* Button Styles */
+        button, .download-btn {
+            background-color: #198754;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        button:hover, .download-btn:hover { background-color: #157347; }
+
+        /* Result Area Style */
+        #result {
+            margin-top: 25px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        #result p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .reduction-text {
+            font-weight: bold;
+            color: #dc3545;
+        }
+
+        /* Utility Class */
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="ad-placeholder-top"><p>বিজ্ঞাপনের জন্য জায়গা (Top Ad Space)</p></div>
+
+    <div class="container">
+        <h1>সহজ ইমেজ কম্প্রেসার</h1>
+        <p>ছবির কোয়ালিটি ঠিক রেখে সাইজ কমান</p>
+
+        <div class="upload-area">
+            <input type="file" id="imageInput" accept="image/jpeg, image/png, image/webp">
+            <label for="imageInput">ছবি সিলেক্ট করুন</label>
+        </div>
+        
+        <div id="image-preview" class="hidden">
+            <img id="preview" src="#" alt="Image Preview"/>
+        </div>
+
+        <div id="qualityControl" class="quality-slider hidden">
+            <label for="qualityRange">কম্প্রেশন কোয়ালিটি: <span id="qualityValue">70</span>%</label>
+            <input type="range" id="qualityRange" min="1" max="100" value="70">
+        </div>
+        
+        <button id="compressBtn" class="hidden">ছবি কম্প্রেস করুন</button>
+
+        <div id="result" class="hidden">
+            <h2>ফলাফল</h2>
+            <p>আসল সাইজ: <span id="originalSize"></span></p>
+            <p>নতুন সাইজ: <span id="compressedSize"></span></p>
+            <p class="reduction-text">সাইজ কমেছে: <span id="reduction"></span>%</p>
+            <a id="downloadLink" href="#" class="download-btn" download="compressed-image">কম্প্রেস করা ছবি ডাউনলোড করুন</a>
+        </div>
+    </div>
+
+    <div class="ad-placeholder-bottom"><p>বিজ্ঞাপনের জন্য জায়গা (Bottom Ad Space)</p></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+    
+    <script>
+        // DOM elements
+        const imageInput = document.getElementById('imageInput');
+        const imagePreviewDiv = document.getElementById('image-preview');
+        const previewImage = document.getElementById('preview');
+        const qualityControlDiv = document.getElementById('qualityControl'); // নতুন
+        const qualityRange = document.getElementById('qualityRange'); // নতুন
+        const qualityValue = document.getElementById('qualityValue'); // নতুন
+        const compressBtn = document.getElementById('compressBtn');
+        const resultDiv = document.getElementById('result');
+        const originalSizeSpan = document.getElementById('originalSize');
+        const compressedSizeSpan = document.getElementById('compressedSize');
+        const reductionSpan = document.getElementById('reduction');
+        const downloadLink = document.getElementById('downloadLink');
+
+        let originalFile = null;
+
+        // Listen for file selection
+        imageInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                originalFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    imagePreviewDiv.classList.remove('hidden');
+                    qualityControlDiv.classList.remove('hidden'); // স্লাইডার দেখান
+                    compressBtn.classList.remove('hidden');
+                    resultDiv.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // --- নতুন: স্লাইডার পরিবর্তন হলে ভ্যালু আপডেট করুন ---
+        qualityRange.addEventListener('input', () => {
+            qualityValue.textContent = qualityRange.value;
+        });
+
+        // Listen for compress button click
+        compressBtn.addEventListener('click', async () => {
+            if (!originalFile) {
+                alert('অনুগ্রহ করে প্রথমে একটি ছবি সিলেক্ট করুন।');
+                return;
+            }
+
+            // --- পরিবর্তিত: স্লাইডার থেকে কোয়ালিটি ভ্যালু নিন ---
+            const quality = parseInt(qualityRange.value) / 100; // ভ্যালুকে 0-1 স্কেলে রূপান্তর
+
+            const options = {
+                maxWidthOrHeight: 1920,
+                useWebWorker: true,
+                initialQuality: quality // ডায়নামিক কোয়ালিটি ব্যবহার করুন
+            };
+
+            try {
+                const compressedFile = await imageCompression(originalFile, options);
+                originalSizeSpan.textContent = formatBytes(originalFile.size);
+                compressedSizeSpan.textContent = formatBytes(compressedFile.size);
+                
+                const reductionPercentage = ((originalFile.size - compressedFile.size) / originalFile.size * 100).toFixed(2);
+                reductionSpan.textContent = reductionPercentage;
+
+                const downloadUrl = URL.createObjectURL(compressedFile);
+                downloadLink.href = downloadUrl;
+                downloadLink.download = `compressed_${originalFile.name}`;
+
+                resultDiv.classList.remove('hidden');
+
+            } catch (error) {
+                console.error(error);
+                alert('দুঃখিত, ছবিটি কম্প্রেস করার সময় একটি সমস্যা হয়েছে।');
+            }
+        });
+
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+    </script>
+
+</body>
+</html>
