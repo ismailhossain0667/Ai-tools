@@ -1,1 +1,222 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Hub - আপনার প্রয়োজনীয় সকল টুল</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        /* Basic Reset and Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 10px auto 0;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            padding: 40px 20px;
+        }
+
+        /* Grid for Tool Cards */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Individual Tool Card Styling */
+        .tool-card {
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .tool-card .material-icons {
+            font-size: 48px;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .tool-card h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #212529;
+        }
+
+        .tool-card p {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Footer Styling */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            background-color: #ffffff;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>AI Tools Hub</h1>
+        <p>আপনার দৈনন্দিন কাজ সহজ করার জন্য সেরা এআই টুলস কালেকশন</p>
+    </header>
+
+    <main class="main-content">
+        <div class="tool-grid">
+            <a href="#" class="tool-card">
+                <span class="material-icons">draw</span>
+                <h3>AI Writer</h3>
+                <p>যেকোনো বিষয়ের উপর আর্টিকেল লিখুন।</p>
+            </a>
+            <a href="#" class="tool-card">
+                <span class="material-icons">image</span>
+                <h3>Image Generator</h3>
+                <p>লেখা থেকে ছবি তৈরি করুন।</p>
+            </a>
+            <a href="#" class="tool-card">
+                <span class="material-icons">auto_fix_high</span>
+                <h3>Background Remover</h3>
+                <p>ছবির ব্যাকগ্রাউন্ড সরিয়ে ফেলুন।</p>
+            </a>
+            <a href="#" class="tool-card">
+                <span class="material-icons">compress</span>
+                <h3>Image Compressor</h3>
+                <p>ছবির সাইজ কমান, কোয়ালিটি ঠিক রেখে।</p>
+            </a>
+            <a href="#" class="tool-card">
+                <span class="material-icons">photo_size_select_large</span>
+                <h3>Image Resizer</h3>
+                <p>ছবির আকার পরিবর্তন করুন।</p>
+            </a>
+            <a href="#" class="tool-card">
+                <span class="material-icons">qr_code_2</span>
+                <h3>QR Code Generator</h3>
+                <p>লিংক বা টেক্সটের জন্য QR কোড বানান।</p>
+            </a>
+            <a href="#" class="tool-card">
+                <span class="material-icons">palette</span>
+                <h3>Logo Maker</h3>
+                <p>আপনার কোম্পানির জন্য লোগো ডিজাইন করুন।</p>
+            </a>
+             <a href="#" class="tool-card">
+                <span class="material-icons">picture_as_pdf</span>
+                <h3>PDF Compressor</h3>
+                <p>পিডিএফ ফাইলের সাইজ কমান।</p>
+            </a>
+            <a href="#" class="tool-card">
+                <span class="material-icons">mic</span>
+                <h3>Voice to Text</h3>
+                <p>কথাকে লেখায় রূপান্তর করুন।</p>
+            </a>
+             <a href="#" class="tool-card">
+                <span class="material-icons">translate</span>
+                <h3>AI Translator</h3>
+                <p>যেকোনো ভাষা অনুবাদ করুন।</p>
+            </a>
+
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 11</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 12</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 13</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 14</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 15</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 16</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 17</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 18</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 19</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 20</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 21</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 22</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 23</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 24</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 25</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 26</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 27</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 28</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 29</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 30</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 31</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 32</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 33</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 34</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 35</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 36</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 37</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 38</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 39</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 40</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 41</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 42</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 43</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 44</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 45</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 46</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 47</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 48</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 49</h3><p>Description</p></a>
+            <a href="#" class="tool-card"><span class="material-icons">add_box</span><h3>Tool 50</h3><p>Description</p></a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 AI Tools Hub. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
+
+
+
 
