@@ -1,27 +1,27 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Resizer</title>
+    <title>Image Resizer (Slider Version)</title>
     <style>
         /* CSS Code Starts Here */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #f0f2f5;
             display: flex;
-            flex-direction: column; /* To stack ads and container */
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
             margin: 0;
             padding: 20px 0;
+            box-sizing: border-box;
         }
 
         .ad-placeholder {
-            width: 100%;
-            max-width: 728px; /* Standard ad width */
-            height: 90px;     /* Standard ad height */
+            width: 90%;
+            max-width: 728px;
+            height: 90px;
             background-color: #e0e0e0;
             display: flex;
             justify-content: center;
@@ -58,12 +58,8 @@
             margin-bottom: 25px;
         }
 
-        .input-area {
-            margin-bottom: 20px;
-        }
-
         .upload-label {
-            background-color: #1877f2; /* Facebook blue */
+            background-color: #1877f2;
             color: white;
             padding: 12px 20px;
             border-radius: 6px;
@@ -86,39 +82,62 @@
             display: block;
             color: #606770;
             font-size: 14px;
+            min-height: 20px;
         }
 
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
+        /* Slider Styles */
+        .slider-container {
+            margin: 25px 0;
+            text-align: center;
         }
 
-        .option {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .option label {
+        .slider-container label {
             font-weight: bold;
             color: #333;
+            display: block;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        #resizeSlider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 15px;
+            border-radius: 5px;   
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            cursor: pointer;
         }
 
-        .option input {
-            width: 100px;
-            padding: 10px;
-            border: 1px solid #dddfe2;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 16px;
+        #resizeSlider:hover {
+            opacity: 1;
         }
+
+        #resizeSlider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%; 
+            background: #1877f2;
+        }
+
+        #sliderValue {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1877f2;
+            margin-top: 10px;
+            display: block;
+        }
+
 
         button#resizeBtn {
             width: 100%;
             padding: 14px;
-            background-color: #42b72a; /* Green color */
+            background-color: #42b72a;
             color: white;
             border: none;
             border-radius: 6px;
@@ -131,10 +150,6 @@
         button#resizeBtn:disabled {
             background-color: #ccd0d5;
             cursor: not-allowed;
-        }
-
-        button#resizeBtn:not(:disabled):hover {
-            background-color: #36a420;
         }
 
         .progress-container {
@@ -150,7 +165,6 @@
             width: 0%;
             height: 22px;
             background-color: #1877f2;
-            border-radius: 6px;
             text-align: center;
             line-height: 22px;
             color: white;
@@ -173,7 +187,7 @@
         #downloadLink {
             display: block;
             padding: 12px 20px;
-            background-color: #f5a623; /* Orange color */
+            background-color: #f5a623;
             color: white;
             text-decoration: none;
             border-radius: 6px;
@@ -181,10 +195,6 @@
             transition: background-color 0.3s;
         }
         
-        #downloadLink:hover {
-            background-color: #f09a0a;
-        }
-
         .hidden {
             display: none !important;
         }
@@ -193,27 +203,22 @@
 </head>
 <body>
 
-    <div class="ad-placeholder">Top Ad (728x90)</div>
+    <div class="ad-placeholder">Top Ad Placeholder</div>
 
     <div class="container">
-        <h1>🖼️ Image Resizer Tool</h1>
-        <p>আপনার ছবিটি আপলোড করুন এবং পছন্দমত নতুন সাইজ দিন।</p>
+        <h1>🖼️ Image Resizer</h1>
+        <p>ছবি সিলেক্ট করুন এবং স্লাইডার টেনে সাইজ পরিবর্তন করুন।</p>
         
-        <div class="input-area">
+        <div>
             <label for="imageUpload" class="upload-label">ছবি সিলেক্ট করুন</label>
             <input type="file" id="imageUpload" accept="image/*">
-            <span id="fileName">এখনো কোনো ফাইল সিলেক্ট করা হয়নি</span>
+            <p id="fileName">এখনো কোনো ফাইল সিলেক্ট করা হয়নি</p>
         </div>
 
-        <div class="options">
-            <div class="option">
-                <label for="widthInput">প্রস্থ (Width):</label>
-                <input type="number" id="widthInput" placeholder="e.g., 800">
-            </div>
-            <div class="option">
-                <label for="heightInput">উচ্চতা (Height):</label>
-                <input type="number" id="heightInput" placeholder="e.g., 600">
-            </div>
+        <div class="slider-container hidden" id="sliderControl">
+            <label for="resizeSlider">রিসাইজ পার্সেন্টেজ</label>
+            <input type="range" min="10" max="200" value="100" step="1" id="resizeSlider">
+            <span id="sliderValue">100%</span>
         </div>
 
         <button id="resizeBtn" disabled>রিসাইজ করুন</button>
@@ -229,102 +234,115 @@
         
     </div>
 
-    <div class="ad-placeholder bottom">Bottom Ad (728x90)</div>
+    <div class="ad-placeholder bottom">Bottom Ad Placeholder</div>
 
     <script>
-        // JavaScript Code Starts Here
         document.addEventListener('DOMContentLoaded', () => {
             const imageUpload = document.getElementById('imageUpload');
             const fileNameSpan = document.getElementById('fileName');
-            const widthInput = document.getElementById('widthInput');
-            const heightInput = document.getElementById('heightInput');
             const resizeBtn = document.getElementById('resizeBtn');
+            const sliderControl = document.getElementById('sliderControl');
+            const resizeSlider = document.getElementById('resizeSlider');
+            const sliderValueSpan = document.getElementById('sliderValue');
+            
             const progressBarContainer = document.querySelector('.progress-container');
             const progressBar = document.getElementById('progressBar');
             const imagePreview = document.getElementById('imagePreview');
             const downloadLink = document.getElementById('downloadLink');
 
             let originalImageFile = null;
+            let originalWidth = 0;
+            let originalHeight = 0;
 
             imageUpload.addEventListener('change', (e) => {
                 if (e.target.files.length > 0) {
                     originalImageFile = e.target.files[0];
                     fileNameSpan.textContent = `ফাইল: ${originalImageFile.name}`;
-                    resizeBtn.disabled = false;
-
-                    // Reset output
-                    imagePreview.classList.add('hidden');
-                    downloadLink.classList.add('hidden');
-                    progressBarContainer.style.display = 'none';
-
+                    
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         const img = new Image();
                         img.onload = () => {
-                            widthInput.value = img.width;
-                            heightInput.value = img.height;
+                            // Store original dimensions
+                            originalWidth = img.width;
+                            originalHeight = img.height;
+
+                            // Show slider and enable button
+                            sliderControl.classList.remove('hidden');
+                            resizeBtn.disabled = false;
+                            
+                            // Reset slider to 100%
+                            resizeSlider.value = 100;
+                            sliderValueSpan.textContent = "100%";
                         };
                         img.src = event.target.result;
                     };
                     reader.readAsDataURL(originalImageFile);
+
+                    // Reset output area
+                    imagePreview.classList.add('hidden');
+                    downloadLink.classList.add('hidden');
+                    progressBarContainer.style.display = 'none';
                 }
             });
 
+            // Update the percentage display when slider is moved
+            resizeSlider.addEventListener('input', (e) => {
+                sliderValueSpan.textContent = `${e.target.value}%`;
+            });
+
             resizeBtn.addEventListener('click', () => {
-                if (!originalImageFile || !widthInput.value || !heightInput.value) {
-                    alert('অনুগ্রহ করে একটি ছবি সিলেক্ট করুন এবং প্রস্থ ও উচ্চতা দিন।');
+                if (!originalImageFile) {
+                    alert('প্রথমে একটি ছবি সিলেক্ট করুন।');
                     return;
                 }
 
-                const width = parseInt(widthInput.value, 10);
-                const height = parseInt(heightInput.value, 10);
-                
-                if (width <= 0 || height <= 0) {
-                    alert('প্রস্থ এবং উচ্চতা অবশ্যই শূন্যের চেয়ে বড় হতে হবে।');
+                const percentage = parseInt(resizeSlider.value, 10);
+                const newWidth = Math.round(originalWidth * (percentage / 100));
+                const newHeight = Math.round(originalHeight * (percentage / 100));
+
+                if (newWidth <= 0 || newHeight <= 0) {
+                    alert('রিসাইজ করার পর ছবির সাইজ 너무 ছোট হয়ে যাচ্ছে।');
                     return;
                 }
 
                 progressBarContainer.style.display = 'block';
                 imagePreview.classList.add('hidden');
                 downloadLink.classList.add('hidden');
+                
+                updateProgress(20);
 
                 const reader = new FileReader();
                 reader.readAsDataURL(originalImageFile);
                 reader.onload = (event) => {
-                    updateProgress(20, 'ছবি লোড হচ্ছে...');
                     const img = new Image();
                     img.src = event.target.result;
                     img.onload = () => {
+                        updateProgress(50);
                         const canvas = document.createElement('canvas');
+                        canvas.width = newWidth;
+                        canvas.height = newHeight;
                         const ctx = canvas.getContext('2d');
-                        canvas.width = width;
-                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                        updateProgress(80);
                         
-                        updateProgress(50, 'রিসাইজ করা হচ্ছে...');
-
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        updateProgress(80, 'ফাইল তৈরি হচ্ছে...');
-
                         const dataUrl = canvas.toDataURL(originalImageFile.type);
                         imagePreview.src = dataUrl;
                         downloadLink.href = dataUrl;
-
-                        // Create a clean filename
+                        
                         const fileExtension = originalImageFile.name.split('.').pop();
                         const fileNameWithoutExt = originalImageFile.name.replace(/\.[^/.]+$/, "");
-                        downloadLink.download = `${fileNameWithoutExt}_resized_${width}x${height}.${fileExtension}`;
+                        downloadLink.download = `${fileNameWithoutExt}_resized_${percentage}p.${fileExtension}`;
 
                         imagePreview.classList.remove('hidden');
                         downloadLink.classList.remove('hidden');
                         
-                        updateProgress(100, 'সম্পন্ন!');
+                        updateProgress(100);
                     };
                 };
             });
 
-            function updateProgress(percentage, text) {
-                // This setTimeout helps the browser render the change smoothly
+            function updateProgress(percentage) {
                 setTimeout(() => {
                     progressBar.style.width = `${percentage}%`;
                     progressBar.textContent = `${percentage}%`;
